@@ -4,7 +4,7 @@
   "description": "home-assignment",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon --es-module-specifier-resolution=node server.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

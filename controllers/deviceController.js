@@ -1,13 +1,16 @@
 import path from "path";
+import dotenv from "dotenv";
 import DevicesDataManager from "../classes/devicesDataManager";
 import CranesDataManager from "../classes/cranesDataManager";
 import statusCodes from "../lib/statusCodes";
 
+dotenv.config();
+
 const cranesPath = path.join("..", process.env.CRANES_JSON);
 const devicesPath = path.join("..", process.env.DEVICES_JSON);
 
-const devicesData = DevicesDataManager(devicesPath);
-const devicesData = CranesDataManager(devicesPath);
+const cranesData = new CranesDataManager(cranesPath);
+const devicesData = new DevicesDataManager(devicesPath);
 
 export const getNonDeletedDevices = (req, res) => {
   const nonDeleteDevices = devicesData.getDevicesByDeletedKey(false);
@@ -26,6 +29,9 @@ export const setNewDevice = (req, res) => {
     return res.status(statusCodes.CONFLICT).end();
 
   if (isDeviceMissingProps(object))
+    return res.status(statusCodes.NOT_ACCEPTABLE).end();
+
+  if (cranesData.isIdExist(object.id))
     return res.status(statusCodes.NOT_ACCEPTABLE).end();
 
   if (devicesData.createNewDevice(newDevice))

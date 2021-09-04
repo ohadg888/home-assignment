@@ -1,9 +1,14 @@
 import { readFile } from "../lib/files";
 
-export default class DevicesDataManager {
+export default class CranesDataManager {
   constructor(path) {
     this.path = path;
-    this.cranes = readFile(path).cranes;
+    this.readFromFile();
+  }
+
+  readFromFile() {
+    const cranesJson = readFile(this.path);
+    this.cranes = cranesJson.cranes;
   }
 
   isIdExist(craneId) {

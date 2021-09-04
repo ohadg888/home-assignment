@@ -1,4 +1,4 @@
-import { router } from "express";
+import express from "express";
 import {
   getNonDeletedDevices,
   getdeletedDevices,
@@ -7,12 +7,18 @@ import {
   deleteDeviceById,
 } from "../controllers/deviceController";
 
-router.get("/", getNonDeletedDevices);
+const router = express.Router();
 
-router.get("/deleted", getdeletedDevices);
+const deviceRoutes = () => {
+  router.get("/", getNonDeletedDevices);
 
-router.post("/", setNewDevice);
+  router.get("/deleted", getdeletedDevices);
 
-router.get("/{id}", getDeviceById);
+  router.post("/", setNewDevice);
 
-router.delete("/{id}", deleteDeviceById);
+  router.get("/{id}", getDeviceById);
+
+  router.delete("/{id}", deleteDeviceById);
+};
+
+export default deviceRoutes;
