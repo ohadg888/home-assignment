@@ -1,18 +1,20 @@
 import { readFile, writeFile } from "../lib/files";
-import StatusCodes from "../lib/statusCodes";
+import statusCodes from "../lib/statusCodes";
 import Device from "./device";
 
 export default class DevicesDataManager {
   constructor(path) {
     this.path = path;
-    this.devices = readFile(path).devices;
+    this.readFromFile();
     this.mustHaveProps = ["id", "s_n", "crane_id", "model", "description"];
   }
 
+  readFromFile() {
+    const devicesArray = readFile(this.path).devices;
+    this.devices = dataArray.map((device) => new Device(device));
+  }
+
   createNewDevice(object) {
-    if (this.isDeviceExist(object)) res.statusCode(StatusCodes.ID_EXISTS).end();
-    if (isDeviceMissingProps(object))
-      res.statusCode(StatusCodes.NOT_ACCEPTABLE).end();
     return new Device(object);
   }
 
@@ -31,7 +33,9 @@ export default class DevicesDataManager {
   }
 
   getDeviceById(deviceId) {
-    return this.devices.filter((device) => device.id === deviceId);
+    const deviceById = this.devices.filter((device) => device.id === deviceId);
+    if (deviceById.length === 0) res.status(statusCodes.NOT_FOUND).end();
+    res.status(statusCodes.SUCCESS).send(deviceById[0]);
   }
 
   deleteDeviceById(deviceId) {

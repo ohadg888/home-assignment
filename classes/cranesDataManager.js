@@ -1,6 +1,4 @@
-import { readFile, writeFile } from "../lib/files";
-import StatusCodes from "../lib/statusCodes";
-import Device from "./device";
+import { readFile } from "../lib/files";
 
 export default class DevicesDataManager {
   constructor(path) {
