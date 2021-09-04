@@ -13,3 +13,11 @@ app.use("/health", healthRoutes);
 app.use("/devices", deviceRoutes);
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
+
+process.on("SIGTERM", () => {
+  console.info("SIGTERM signal received.");
+  console.log("Closing http server.");
+  app.close(() => {
+    console.log("Http server closed.");
+  });
+});

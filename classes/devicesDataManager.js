@@ -52,7 +52,10 @@ export default class DevicesDataManager {
 
   deleteDeviceById(deviceId) {
     this.devices.map((device) => {
-      if (device.id === deviceId) device.deleted = true;
+      if (device.id === deviceId) {
+        device.deleted = true;
+        device.updated = new Date();
+      }
     });
     try {
       this.writeToFile();
