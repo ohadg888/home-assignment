@@ -1,52 +1,61 @@
-import path from "path";
 import dotenv from "dotenv";
 import DevicesDataManager from "../classes/devicesDataManager";
-import CranesDataManager from "../classes/cranesDataManager";
+import CranesDataManager from "../classes/CranesDataManager";
 import statusCodes from "../lib/statusCodes";
 
 dotenv.config();
 
-const cranesPath = path.join("..", process.env.CRANES_JSON);
-const devicesPath = path.join("..", process.env.DEVICES_JSON);
+const cranesPath = process.env.CRANES_JSON;
+const devicesPath = process.env.DEVICES_JSON;
 
-const cranesData = new CranesDataManager(cranesPath);
-const devicesData = new DevicesDataManager(devicesPath);
+const cranesDataManager = new CranesDataManager(cranesPath);
+const devicesDataManager = new DevicesDataManager(devicesPath);
 
-export const getNonDeletedDevices = (req, res) => {
-  const nonDeleteDevices = devicesData.getDevicesByDeletedKey(false);
-  res.status(statusCodes.SUCCESS).send(nonDeleteDevices);
+const sendDevices = (devicesToSend, res) => {
+  res.status(statusCodes.SUCCESS).send(removeDeletedKeys(devicesToSend));
 };
 
-export const getdeletedDevices = (req, res) => {
-  const deleteDevices = devicesData.getDevicesByDeletedKey(false);
-  res.status(statusCodes.SUCCESS).send(deleteDevices);
+const removeDeletedKeys = (devices) => {
+  devices.forEach((device) => delete device.deleted);
+  return devices;
+};
+
+export const getNonDeletedDevices = (req, res) => {
+  const nonDeleteDevices = devicesDataManager.getDevicesByDeletedKey(false);
+  sendDevices(nonDeleteDevices, res);
+};
+
+export const getDeletedDevices = (req, res) => {
+  const deleteDevices = devicesDataManager.getDevicesByDeletedKey(true);
+  sendDevices(deleteDevices, res);
 };
 
 export const setNewDevice = (req, res) => {
-  const newDevice = req.query;
+  const object = req.query;
+  if (devicesDataManager.isDeviceMissingProps(object))
+    return res.status(statusCodes.NOT_ACCEPTABLE).end();
 
-  if (devicesData.isDeviceExist(newDevice))
+  if (devicesDataManager.isDeviceExist(object))
     return res.status(statusCodes.CONFLICT).end();
 
-  if (isDeviceMissingProps(object))
+  if (!cranesDataManager.isIdExist(object.crane_id))
     return res.status(statusCodes.NOT_ACCEPTABLE).end();
 
-  if (cranesData.isIdExist(object.id))
-    return res.status(statusCodes.NOT_ACCEPTABLE).end();
-
-  if (devicesData.createNewDevice(newDevice))
+  if (devicesDataManager.createNewDevice(object))
     return res.status(statusCodes.CREATED).end();
 
   res.status(statusCodes.SERVER_ERROR).end();
 };
 
 export const getDeviceById = (req, res) => {
-  const deviceId = req.params.id;
-  res.status(statusCodes.SUCCESS).send(devicesData.getDeviceById(deviceId));
+  const deviceById = devicesDataManager.getDeviceById(req.params.id);
+  if (!deviceById) return res.status(statusCodes.NOT_FOUND).end();
+  sendDevices(deviceById, res);
 };
 
 export const deleteDeviceById = (req, res) => {
-  const deviceId = req.params.id;
-  devicesData.deleteDeviceById(deviceId);
+  if (!devicesDataManager.getDeviceById(req.params.id))
+    res.status(statusCodes.NOT_FOUND).end();
+  devicesDataManager.deleteDeviceById(req.params.id);
   res.status(statusCodes.SUCCESS).end();
 };

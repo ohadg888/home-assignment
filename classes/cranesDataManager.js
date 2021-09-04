@@ -7,8 +7,8 @@ export default class CranesDataManager {
   }
 
   readFromFile() {
-    const cranesJson = readFile(this.path);
-    this.cranes = cranesJson.cranes;
+    const cranesRawData = readFile(this.path);
+    this.cranes = JSON.parse(cranesRawData).cranes;
   }
 
   isIdExist(craneId) {

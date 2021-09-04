@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getNonDeletedDevices,
-  getdeletedDevices,
+  getDeletedDevices,
   setNewDevice,
   getDeviceById,
   deleteDeviceById,
@@ -9,16 +9,14 @@ import {
 
 const router = express.Router();
 
-const deviceRoutes = () => {
-  router.get("/", getNonDeletedDevices);
+router.get("/", getNonDeletedDevices);
 
-  router.get("/deleted", getdeletedDevices);
+router.get("/deleted", getDeletedDevices);
 
-  router.post("/", setNewDevice);
+router.post("/", setNewDevice);
 
-  router.get("/{id}", getDeviceById);
+router.get("/:id", getDeviceById);
 
-  router.delete("/{id}", deleteDeviceById);
-};
+router.delete("/:id", deleteDeviceById);
 
-export default deviceRoutes;
+export default router;

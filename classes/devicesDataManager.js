@@ -1,5 +1,4 @@
 import { readFile, writeFile } from "../lib/files";
-import statusCodes from "../lib/statusCodes";
 import Device from "./device";
 
 export default class DevicesDataManager {
@@ -10,12 +9,24 @@ export default class DevicesDataManager {
   }
 
   readFromFile() {
-    const devicesArray = readFile(this.path).devices;
-    this.devices = dataArray.map((device) => new Device(device));
+    const devicesRawData = readFile(this.path);
+    const devicesJson = JSON.parse(devicesRawData).devices;
+    this.devices = devicesJson.map((device) => new Device(device));
+  }
+
+  writeToFile() {
+    writeFile(this.path, JSON.stringify({ devices: this.devices }));
   }
 
   createNewDevice(object) {
-    return new Device(object);
+    try {
+      this.devices.push(new Device(object));
+      this.writeToFile();
+      return true;
+    } catch (error) {
+      console.info(error);
+      return false;
+    }
   }
 
   isDeviceExist(object) {
@@ -28,22 +39,25 @@ export default class DevicesDataManager {
     return this.mustHaveProps.some((prop) => !object.hasOwnProperty(prop));
   }
 
-  getByDeletedKey(deletedVal) {
+  getDevicesByDeletedKey(deletedVal) {
     return this.devices.filter((device) => device.deleted === deletedVal);
   }
 
   getDeviceById(deviceId) {
-    const deviceById = this.devices.filter((device) => device.id === deviceId);
-    if (deviceById.length === 0) res.status(statusCodes.NOT_FOUND).end();
-    res.status(statusCodes.SUCCESS).send(deviceById[0]);
+    const deviceById = this.devices.filter(
+      (device) => device.id === deviceId && !device.deleted
+    );
+    return deviceById.length ? deviceById : null;
   }
 
   deleteDeviceById(deviceId) {
     this.devices.map((device) => {
-      if (device.id === deviceId) {
-        device.deleted = false;
-      }
+      if (device.id === deviceId) device.deleted = true;
     });
-    writeFile(this.path, this.devices);
+    try {
+      this.writeToFile();
+    } catch (error) {
+      console.info(error);
+    }
   }
 }
