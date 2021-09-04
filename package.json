@@ -4,7 +4,7 @@
   "description": "home-assignment",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

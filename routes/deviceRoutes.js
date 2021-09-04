@@ -7,12 +7,12 @@ import {
   deleteDeviceById,
 } from "../controllers/deviceController";
 
-router.get("/devices", getNonDeletedDevices);
+router.get("/", getNonDeletedDevices);
 
-router.get("/devices/deleted", getdeletedDevices);
+router.get("/deleted", getdeletedDevices);
 
-router.post("/devices", setNewDevice);
+router.post("/", setNewDevice);
 
-router.get("/devices/{id}", getDeviceById);
+router.get("/{id}", getDeviceById);
 
-router.delete("/devices/{id}", deleteDeviceById);
+router.delete("/{id}", deleteDeviceById);
