@@ -5,8 +5,8 @@ export default class Device {
     this.s_n = object.s_n;
     this.model = object.model;
     this.description = object.description;
-    this.created = object.created;
-    this.updated = object.updated;
-    this.deleted = object.deleted;
+    this.created = object.created ?? new Date();
+    this.updated = object.updated ?? new Date();
+    this.deleted = object.deleted ?? false;
   }
 }

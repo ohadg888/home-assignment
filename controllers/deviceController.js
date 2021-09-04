@@ -20,7 +20,7 @@ export const getdeletedDevices = (req, res) => {
 export const setNewDevice = (req, res) => {
   const newDevice = req.query;
   devicesData.createNewDevice(newDevice);
-  res.statusCode(StatusCodes.SUCCESS).send(deviceToSend);
+  res.statusCode(StatusCodes.CREATED).end();
 };
 
 export const getDeviceById = (req, res) => {
