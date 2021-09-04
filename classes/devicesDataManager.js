@@ -1,5 +1,6 @@
 import { readFile, writeFile } from "../lib/files";
 import Device from "./device";
+import dateFormat from "dateformat";
 
 export default class DevicesDataManager {
   constructor(path) {
@@ -54,7 +55,7 @@ export default class DevicesDataManager {
     this.devices.map((device) => {
       if (device.id === deviceId) {
         device.deleted = true;
-        device.updated = new Date();
+        device.updated = dateFormat(new Date(), "dd/mm/yyyy HH:MM:ss");
       }
     });
     try {

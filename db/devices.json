@@ -36,8 +36,18 @@
       "s_n": "5234934811",
       "model": "hawkeye 5",
       "description": "That’s a great device",
-      "created": null,
-      "updated": null,
+      "created": "05/09/2021 02:11:40",
+      "updated": "05/09/2021 02:11:40",
+      "deleted": false
+    },
+    {
+      "id": "device0224",
+      "crane_id": "crane1",
+      "s_n": "52349348114",
+      "model": "hawkeye 5",
+      "description": "That’s a great device",
+      "created": "05/09/2021 02:12:31",
+      "updated": "05/09/2021 02:12:31",
       "deleted": false
     }
   ]
