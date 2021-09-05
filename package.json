@@ -4,7 +4,8 @@
   "description": "home-assignment",
   "type": "module",
   "scripts": {
-    "start": "node --es-module-specifier-resolution=node server.js"
+    "start": "nodemon --es-module-specifier-resolution=node server.js",
+    "test": "jest"
   },
   "dependencies": {
     "dateformat": "^4.5.1",
@@ -16,6 +17,8 @@
     "@babel/core": "^7.15.0",
     "@babel/node": "^7.14.9",
     "@babel/preset-env": "^7.15.0",
-    "nodemon": "^2.0.12"
+    "jest": "^27.1.0",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6"
   }
 }
