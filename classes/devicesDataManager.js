@@ -41,12 +41,14 @@ export default class DevicesDataManager {
   }
 
   getDevicesByDeletedKey(deletedVal) {
-    return this.devices.filter((device) => device.deleted === deletedVal);
+    return this.devices
+      .filter((device) => device.deleted === deletedVal)
+      .map((device) => new Device(device));
   }
 
   getDeviceById(deviceId) {
     const deviceById = this.devices.filter((device) => device.id === deviceId);
-    return deviceById.length ? deviceById[0] : null;
+    return deviceById.length ? new Device(newdeviceById[0]) : null;
   }
 
   deleteDeviceById(deviceId) {
