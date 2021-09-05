@@ -4,8 +4,8 @@
   "description": "home-assignment",
   "type": "module",
   "scripts": {
-    "start": "nodemon --es-module-specifier-resolution=node server.js",
-    "test": "jest"
+    "start": "cross-env NODE_ENV=production nodemon --experimental-modules --es-module-specifier-resolution=node server.js",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "dependencies": {
     "dateformat": "^4.5.1",
@@ -16,7 +16,9 @@
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
     "@babel/node": "^7.14.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
     "@babel/preset-env": "^7.15.0",
+    "cross-env": "^7.0.3",
     "jest": "^27.1.0",
     "nodemon": "^2.0.12",
     "supertest": "^6.1.6"
