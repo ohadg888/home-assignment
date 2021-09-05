@@ -12,12 +12,12 @@ const port = process.env.HTTP_PORT;
 app.use("/health", healthRoutes);
 app.use("/devices", deviceRoutes);
 
-app.listen(port, () => console.log(`Listening to port ${port}`));
+const server = app.listen(port, () => console.log(`Listening to port ${port}`));
 
 process.on("SIGTERM", () => {
   console.info("SIGTERM signal received.");
   console.log("Closing http server.");
-  app.close(() => {
+  server.close(() => {
     console.log("Http server closed.");
   });
 });
