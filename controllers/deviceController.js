@@ -49,8 +49,11 @@ export const setNewDevice = (req, res) => {
 
 export const getDeviceById = (req, res) => {
   const deviceById = devicesDataManager.getDeviceById(req.params.id);
-  if (!deviceById) return res.status(statusCodes.NOT_FOUND).end();
-  sendDevices(deviceById, res);
+  console.log(123);
+  console.log(deviceById);
+  if (!deviceById || deviceById.deleted)
+    return res.status(statusCodes.NOT_FOUND).end();
+  sendDevices([deviceById], res);
 };
 
 export const deleteDeviceById = (req, res) => {

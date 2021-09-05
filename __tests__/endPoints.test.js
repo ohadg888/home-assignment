@@ -26,9 +26,41 @@ describe("GET /health", () => {
 });
 
 describe("GET /devices", () => {
-  test("expected status code of 200 and 1 device", async () => {
-    const response = await request(app).get("/health");
-    expect(response.body).toEqual({});
+  test("should return a list of non-deleted devices", async () => {
+    const response = await request(app).get("/devices");
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0]).toHaveProperty("id");
+    expect(response.body[0]).not.toHaveProperty("deleted");
     expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("GET /devices/deleted", () => {
+  test("should return a list of deleted devices", async () => {
+    const response = await request(app).get("/devices/deleted");
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0]).toHaveProperty("id");
+    expect(response.body[0]).not.toHaveProperty("deleted");
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe("GET /devices/{id}", () => {
+  test("should return device02", async () => {
+    const response = await request(app).get("/devices/device02");
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0].id).toBe("device02");
+    expect(response.body[0]).not.toHaveProperty("deleted");
+    expect(response.statusCode).toBe(200);
+  });
+  test("should not return device, device is deleted", async () => {
+    const response = await request(app).get("/devices/device03");
+    expect(response.body).toEqual({});
+    expect(response.statusCode).toBe(404);
+  });
+  test("should not return device, id does not exist", async () => {
+    const response = await request(app).get("/devices/device032");
+    expect(response.body).toEqual({});
+    expect(response.statusCode).toBe(404);
   });
 });

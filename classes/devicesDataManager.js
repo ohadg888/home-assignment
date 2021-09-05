@@ -45,10 +45,8 @@ export default class DevicesDataManager {
   }
 
   getDeviceById(deviceId) {
-    const deviceById = this.devices.filter(
-      (device) => device.id === deviceId && !device.deleted
-    );
-    return deviceById.length ? deviceById : null;
+    const deviceById = this.devices.filter((device) => device.id === deviceId);
+    return deviceById.length ? deviceById[0] : null;
   }
 
   deleteDeviceById(deviceId) {
