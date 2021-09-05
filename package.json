@@ -4,7 +4,7 @@
   "description": "home-assignment",
   "type": "module",
   "scripts": {
-    "start": "nodemon --es-module-specifier-resolution=node server.js"
+    "start": "node --es-module-specifier-resolution=node server.js"
   },
   "dependencies": {
     "dateformat": "^4.5.1",
