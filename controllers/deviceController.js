@@ -3,7 +3,7 @@ import DevicesDataManager from "../classes/devicesDataManager";
 import CranesDataManager from "../classes/CranesDataManager";
 import statusCodes from "../lib/statusCodes";
 
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const cranesPath = process.env.CRANES_JSON;
 const devicesPath = process.env.DEVICES_JSON;
