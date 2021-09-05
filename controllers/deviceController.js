@@ -58,7 +58,7 @@ export const getDeviceById = (req, res) => {
 
 export const deleteDeviceById = (req, res) => {
   if (!devicesDataManager.getDeviceById(req.params.id))
-    res.status(statusCodes.NOT_FOUND).end();
+    return res.status(statusCodes.NOT_FOUND).end();
   devicesDataManager.deleteDeviceById(req.params.id);
   res.status(statusCodes.SUCCESS).end();
 };
